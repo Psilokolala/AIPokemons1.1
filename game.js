@@ -93,7 +93,7 @@ class Game {
         // Получаем контекст и проверяем его
         this.ctx = this.canvas.getContext('2d');
         if (!this.ctx) {
-            console.error('Не удалось получить контекст canvas');
+            console.error('Failed to get canvas context');
             return;
         }
         console.log('Canvas создан и контекст получен');
@@ -113,8 +113,9 @@ class Game {
         // Инициализируем загрузку карты
         this.mapLoaded = false;
         this.mapImage = new Image();
+        this.mapImage.src = 'assets/map.png';
         this.mapImage.onload = () => {
-            console.log('Карта успешно загружена');
+            console.log('Map image loaded successfully');
             this.mapLoaded = true;
             
             // Растягиваем карту на весь canvas
@@ -124,16 +125,9 @@ class Game {
             // Создаем покемонов только после загрузки карты
             this.createPokemon();
         };
-        this.mapImage.onerror = (error) => {
-            console.error('Ошибка загрузки карты:', error);
-            this.ctx.fillStyle = '#87CEEB';
-            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-            this.mapLoaded = true;
-            
-            // Создаем покемонов даже если карта не загрузилась
-            this.createPokemon();
+        this.mapImage.onerror = () => {
+            console.error('Failed to load map image');
         };
-        this.mapImage.src = 'assets/map.png';
 
         this.pokemons = [];
         this.moonStones = [];
