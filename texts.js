@@ -360,7 +360,7 @@ const pokemonClickQuotes = [
 ];
 
 // Добавляем фразы для спящих покемонов при краже звезды
-export const sleepingPokemonQuotes = [
+const sleepingPokemonQuotes = [
     "Хм... что-то легче стало...",
     "Моя звезда... куда она делась?",
     "Кто-то украл мою звезду!",
@@ -373,7 +373,7 @@ export const sleepingPokemonQuotes = [
     "Кто-то воспользовался моим сном!"
 ];
 
-export const pokemonCookieQuotes = [
+const pokemonCookieQuotes = [
     "Ммм, какое вкусное печенье! 🍪",
     "Ням-ням, спасибо за печенье! 🍪",
     "Обожаю печенье! 🍪",
@@ -386,4 +386,4 @@ export const pokemonCookieQuotes = [
     "Печенье делает меня счастливым! 🍪"
 ];
 
-export { pokemonRandomQuotes, pokemonBattleQuotes, pokemonClickQuotes }; 
+pokemonRandomQuotes, pokemonBattleQuotes, pokemonClickQuotes; 

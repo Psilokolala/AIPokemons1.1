@@ -1,8 +1,5 @@
-// Импортируем тексты из texts.js
-import { pokemonRandomQuotes, pokemonBattleQuotes, pokemonClickQuotes, sleepingPokemonQuotes, pokemonCookieQuotes } from './texts.js';
-import { Pokemon } from './pokemon-sandbox.js';
-
-// Класс для шума Перлина
+// Используем глобальные переменные вместо импортов
+// ... existing code ...
 class PerlinNoise {
     constructor() {
         this.permutation = new Array(256);
