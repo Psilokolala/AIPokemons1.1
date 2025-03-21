@@ -1,3 +1,7 @@
+// Импортируем тексты из texts.js
+import { pokemonRandomQuotes, pokemonBattleQuotes, pokemonClickQuotes, sleepingPokemonQuotes, pokemonCookieQuotes } from './texts.js';
+import { Pokemon } from './pokemon-sandbox.js';
+
 // Класс для шума Перлина
 class PerlinNoise {
     constructor() {
@@ -80,10 +84,11 @@ class Game {
     constructor(initialStars = 0) {
         console.log('Инициализация игры...');
         
-        // Получаем существующий canvas
-        this.canvas = document.getElementById('gameCanvas');
+        // Создаем canvas и добавляем его в body
+        this.canvas = document.createElement('canvas');
         this.canvas.width = 800;
         this.canvas.height = 600;
+        document.body.appendChild(this.canvas);
         
         // Получаем контекст и проверяем его
         this.ctx = this.canvas.getContext('2d');
@@ -202,51 +207,10 @@ class Game {
         this.noise = new PerlinNoise();
 
         // Добавляем массив боевых фраз
-        this.pokemonBattleQuotes = {
-            "winner": [
-                "Я сильнее! 💪",
-                "Победа за мной! 🏆",
-                "Ха! Легкая победа! 😎"
-            ],
-            "loser": [
-                "В следующий раз я выиграю... 😢",
-                "Ты просто везучий! 😤",
-                "Ой-ой... 😵"
-            ]
-        };
+        this.pokemonBattleQuotes = pokemonBattleQuotes;
 
-        // Добавляем цитаты покемонов
-        this.pokemonRandomQuotes = {
-            "Pikachu": [
-                "Пика-пика! ⚡️",
-                "Пикачу хочет играть! 🎮",
-                "Пика? 🤔"
-            ]
-        };
-
-        // Добавляем фразы при клике
-        this.pokemonClickQuotes = [
-            "Привет! 👋",
-            "Давай дружить! 🤝",
-            "Хочешь поиграть? 🎮",
-            "Я рад тебя видеть! 😊"
-        ];
-
-        // Добавляем фразы для спящих покемонов
-        this.sleepingPokemonQuotes = [
-            "Zzz... 😴",
-            "Хр-р-р... 💤",
-            "Мимими... 🌙",
-            "*сладко спит* 🛏️"
-        ];
-
-        // Добавляем фразы для печенья
-        this.pokemonCookieQuotes = [
-            "Ммм, печенье! 🍪",
-            "Обожаю сладости! 😋",
-            "Спасибо за угощение! 🎁",
-            "Хрум-хрум! 😊"
-        ];
+        // Добавляем цитаты про Telegram Premium
+        this.telegramQuotes = pokemonRandomQuotes;
 
         // Создаем биомы (упрощенная версия для карты)
         this.biomes = [];
@@ -736,8 +700,8 @@ class Game {
                         const defender = aggressor === pokemon1 ? pokemon2 : pokemon1;
                         
                         // Используем фразы из pokemonBattleQuotes
-                        this.addMessage(aggressor.name, this.pokemonBattleQuotes.winner[Math.floor(Math.random() * this.pokemonBattleQuotes.winner.length)]);
-                        this.addMessage(defender.name, this.pokemonBattleQuotes.loser[Math.floor(Math.random() * this.pokemonBattleQuotes.loser.length)]);
+                        this.addMessage(aggressor.name, this.pokemonBattleQuotes.aggressor[Math.floor(Math.random() * this.pokemonBattleQuotes.aggressor.length)]);
+                        this.addMessage(defender.name, this.pokemonBattleQuotes.defender[Math.floor(Math.random() * this.pokemonBattleQuotes.defender.length)]);
                         
                         // Вычисляем позиции для драки
                         const centerX = (pokemon1.x + pokemon2.x) / 2;
@@ -931,7 +895,7 @@ class Game {
                                 
                                 // Показываем сообщение спящего покемона только в 50% случаев
                                 if (Math.random() < 0.5) {
-                                    const randomPhrase = this.sleepingPokemonQuotes[Math.floor(Math.random() * this.sleepingPokemonQuotes.length)];
+                                    const randomPhrase = sleepingPokemonQuotes[Math.floor(Math.random() * sleepingPokemonQuotes.length)];
                                     this.addMessage(sleepingPokemon.name, randomPhrase);
                                 }
                                 
@@ -970,7 +934,7 @@ class Game {
                         if (distance < pokemon.size/2 + cookie.size/2) {
                             cookie.collected = true;
                             // Добавляем сообщение о съедении печенья
-                            const randomPhrase = this.pokemonCookieQuotes[Math.floor(Math.random() * this.pokemonCookieQuotes.length)];
+                            const randomPhrase = pokemonCookieQuotes[Math.floor(Math.random() * pokemonCookieQuotes.length)];
                             this.addMessage(pokemon.name, randomPhrase);
                         }
                     }
@@ -1059,7 +1023,7 @@ class Game {
             if (pokemon === this.lastMessagePokemon && now - this.lastMessageTime < 15000) return;
 
             // Выбираем случайную фразу
-            const randomPhrase = this.pokemonRandomQuotes["Pikachu"][Math.floor(Math.random() * this.pokemonRandomQuotes["Pikachu"].length)];
+            const randomPhrase = pokemonRandomQuotes[Math.floor(Math.random() * pokemonRandomQuotes.length)];
             
             // Добавляем сообщение
             this.addMessage(pokemon.name, randomPhrase);
@@ -1379,7 +1343,7 @@ class Game {
             // Проверяем, спит ли покемон
             if (pokemon.wakeUpOnClick()) {
                 // Используем случайную фразу из pokemonClickQuotes
-                const randomPhrase = this.pokemonClickQuotes[Math.floor(Math.random() * this.pokemonClickQuotes.length)];
+                const randomPhrase = pokemonClickQuotes[Math.floor(Math.random() * pokemonClickQuotes.length)];
                 this.addMessage(pokemon.name, randomPhrase);
                 return;
             }
@@ -1390,7 +1354,7 @@ class Game {
             }
 
             // Выбираем случайную фразу из импортированного массива
-            const randomPhrase = this.pokemonClickQuotes[Math.floor(Math.random() * this.pokemonClickQuotes.length)];
+            const randomPhrase = pokemonClickQuotes[Math.floor(Math.random() * pokemonClickQuotes.length)];
             console.log('Выбрана фраза:', randomPhrase);
             
             // Создаем сообщение для конкретного покемона
@@ -1462,7 +1426,7 @@ class Game {
                     if (Math.random() < 0.4) {
                         const fighter = Math.random() < 0.5 ? fight.aggressor : fight.defender;
                         const quotes = fighter === fight.aggressor ? 
-                            this.pokemonBattleQuotes.winner : this.pokemonBattleQuotes.loser;
+                            this.pokemonBattleQuotes.aggressor : this.pokemonBattleQuotes.defender;
                         
                         // Создаем сообщение для конкретного покемона
                         this.currentMessage = {
