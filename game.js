@@ -1,6 +1,6 @@
 // Импортируем тексты из texts.js
-import { pokemonRandomQuotes, pokemonBattleQuotes, pokemonClickQuotes, sleepingPokemonQuotes, pokemonCookieQuotes } from './texts.js';
-import { Pokemon } from './pokemon-sandbox.js';
+import { pokemonRandomQuotes, pokemonBattleQuotes, pokemonClickQuotes, sleepingPokemonQuotes, pokemonCookieQuotes } from '/AIPokemons1.1/texts.js';
+import { Pokemon } from '/AIPokemons1.1/pokemon-sandbox.js';
 
 // Класс для шума Перлина
 class PerlinNoise {
