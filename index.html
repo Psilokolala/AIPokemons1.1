@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Pokemons</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Press Start 2P', monospace;
+        }
+
+        #starsCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        #gameCanvas {
+            position: relative;
+            z-index: 1;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            background-color: #87CEEB;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="starsCanvas"></canvas>
+    <canvas id="gameCanvas"></canvas>
+
+    <script>
+        // Настройка анимации звезд
+        const starsCanvas = document.getElementById('starsCanvas');
+        const starsCtx = starsCanvas.getContext('2d');
+        
+        function resizeStarsCanvas() {
+            starsCanvas.width = window.innerWidth;
+            starsCanvas.height = window.innerHeight;
+        }
+        
+        resizeStarsCanvas();
+        window.addEventListener('resize', resizeStarsCanvas);
+
+        const stars = [];
+        const numStars = 200;
+        
+        for (let i = 0; i < numStars; i++) {
+            stars.push({
+                x: Math.random() * starsCanvas.width,
+                y: Math.random() * starsCanvas.height,
+                size: Math.random() * 2,
+                speed: Math.random() * 0.5 + 0.1,
+                brightness: Math.random()
+            });
+        }
+
+        function animateStars() {
+            starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+            
+            stars.forEach(star => {
+                star.brightness = Math.max(0.2, Math.min(1, star.brightness + (Math.random() - 0.5) * 0.1));
+                
+                starsCtx.beginPath();
+                starsCtx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                starsCtx.fillStyle = `rgba(255, 255, 255, ${star.brightness})`;
+                starsCtx.fill();
+                
+                star.y += star.speed;
+                
+                if (star.y > starsCanvas.height) {
+                    star.y = 0;
+                    star.x = Math.random() * starsCanvas.width;
+                }
+            });
+            
+            requestAnimationFrame(animateStars);
+        }
+
+        animateStars();
+    </script>
+    <script src="texts.js"></script>
+    <script src="pokemon-sandbox.js"></script>
+    <script src="game.js"></script>
+</body>
+</html> 
